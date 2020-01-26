@@ -1,0 +1,63 @@
+nadia_menu:
+    cache:
+        adapter: cache.adapter.array
+        ttl: 604800
+        group_key: _nadia_menu_cache_group
+        check_item_changes: true
+    menus:
+        test:
+            - title: 'menu #1'
+              options:
+                  roles: ['ROLE_PAGE1']
+              children:
+                - title: 'menu #1-1'
+                  options:
+                      roles: ['ROLE_PAGE1']
+                  children: []
+                - title: 'menu #1-2'
+                  options:
+                      roles: ['ROLE_PAGE1']
+                  children: []
+            - title: 'menu #2'
+              options:
+                  roles: ['ROLE_PAGE2']
+              children:
+                - title: 'menu #2-1'
+                  options:
+                      roles: ['ROLE_PAGE2']
+                  children:
+                    - title: 'menu #2-1-1'
+                      options: []
+                      children: []
+            - title: 'menu #3'
+              options:
+                  roles: ['ROLE_PAGE3']
+              children:
+                - title: 'menu #3-1'
+                  options:
+                      roles: ['ROLE_PAGE3']
+                  children: []
+        test2:
+            - title: 'menu2 #1'
+              options: []
+              children:
+                - title: 'menu2 #1-1'
+                  options: []
+                  children: []
+            - title: 'menu2 #2'
+              options: []
+              children:
+                - title: 'menu2 #2-1'
+                  options: []
+                  children:
+                    - title: 'menu2 #2-1-1'
+                      options: []
+                      children: []
+
+    menu_providers:
+        menu_provider1: Nadia\Bundle\NadiaMenuBundle\Tests\Fixtures\TestMenuProvider::provider1
+        menu_provider2: Nadia\Bundle\NadiaMenuBundle\Tests\Fixtures\TestMenuProvider::provider2
+        menu_provider3: Nadia\Bundle\NadiaMenuBundle\Tests\Fixtures\TestMenuProvider::provider3
+        menu_provider4: test.menu.provider.service::provider3
+        menu_provider5: Nadia\Bundle\NadiaMenuBundle\Tests\Fixtures\testMenuProvider
+        test2: Nadia\Bundle\NadiaMenuBundle\Tests\Fixtures\TestMenuProvider::provider2

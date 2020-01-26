@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<xsd:schema xmlns="http://nadialabs.com.tw/schema/dic/menu"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://nadialabs.com.tw/schema/dic/menu"
+            elementFormDefault="qualified">
+
+    <xsd:element name="config" type="config"/>
+
+    <xsd:complexType name="config">
+        <xsd:all>
+            <xsd:element name="cache" type="cache" minOccurs="0"/>
+            <xsd:element name="menu" type="menu" minOccurs="0"/>
+            <xsd:element name="menu_provider" type="menu_provider" minOccurs="0"/>
+        </xsd:all>
+    </xsd:complexType>
+
+    <xsd:complexType name="cache">
+        <xsd:attribute name="adapter" type="xsd:string" default="cache.adapter.array"/>
+        <xsd:attribute name="ttl" type="xsd:integer" default="604800"/>
+        <xsd:attribute name="group_key" type="xsd:string" default="_nadia_menu_cache_group"/>
+        <xsd:attribute name="check_item_changes" type="xsd:boolean" default="true"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="menu">
+        <xsd:all>
+            <xsd:element name="child" type="child" minOccurs="0"/>
+        </xsd:all>
+        <xsd:attribute name="name" type="xsd:string" default=""/>
+    </xsd:complexType>
+
+    <xsd:complexType name="child">
+        <xsd:all>
+            <xsd:element name="option" type="option" minOccurs="0"/>
+            <xsd:element name="child" type="child" minOccurs="0"/>
+        </xsd:all>
+        <xsd:attribute name="title" type="xsd:string" default=""/>
+    </xsd:complexType>
+
+    <xsd:complexType name="option">
+        <xsd:attribute name="name" type="xsd:string" default=""/>
+    </xsd:complexType>
+
+    <xsd:complexType name="menu_provider">
+        <xsd:attribute name="name" type="xsd:string" default=""/>
+    </xsd:complexType>
+</xsd:schema>
