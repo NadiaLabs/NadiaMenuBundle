@@ -11,6 +11,7 @@
 
 namespace Nadia\Bundle\NadiaMenuBundle\Tests\DependencyInjection;
 
+use Nadia\Bundle\NadiaMenuBundle\DependencyInjection\Compiler\MenuProviderPass;
 use Nadia\Bundle\NadiaMenuBundle\DependencyInjection\NadiaMenuExtension;
 use Nadia\Bundle\NadiaMenuBundle\MenuFactory\KnpMenuFactory;
 use Nadia\Bundle\NadiaMenuBundle\MenuProvider\MenuProvider;
@@ -110,6 +111,7 @@ abstract class NadiaMenuExtensionTest extends TestCase
         $container->getCompilerPassConfig()->setOptimizationPasses([]);
         $container->getCompilerPassConfig()->setRemovingPasses([]);
         $container->getCompilerPassConfig()->setAfterRemovingPasses([]);
+        $container->getCompilerPassConfig()->setBeforeOptimizationPasses([new MenuProviderPass()]);
 
         $container->compile();
 

@@ -59,7 +59,7 @@ class NadiaMenuExtension extends Extension
 
         $container->getDefinition(MenuProvider::class)
             ->setArgument(1, array_keys($config['menus']))
-            ->setArgument(2, $this->getMenuProviders($config['menu_providers']));
+            ->setArgument(2, $config['menu_providers']);
 
         $container->getDefinition(KnpMenuFactory::class)->setArgument(5, [
             'cache_ttl' => $config['cache']['ttl'],
@@ -94,39 +94,5 @@ class NadiaMenuExtension extends Extension
 
             $fs->dumpFile($filename, serialize($menu));
         }
-    }
-
-    /**
-     * @param array $menuProviderConfigs
-     *
-     * @return array
-     *
-     * @throws \ReflectionException
-     */
-    private function getMenuProviders(array $menuProviderConfigs)
-    {
-        $return = [];
-
-        foreach ($menuProviderConfigs as $menuName => $callableMethod) {
-            if (false !== strpos($callableMethod, '::')) {
-                list($className, $methodName) = explode('::', $callableMethod);
-
-                if (class_exists($className)) {
-                    $ref = new \ReflectionMethod($className, $methodName);
-
-                    if ($ref->isStatic()) {
-                        $return[$menuName] = $callableMethod;
-                    } else {
-                        $return[$menuName] = [new $className(), $methodName];
-                    }
-                } else {
-                    $return[$menuName] = [new Reference($className), $methodName];
-                }
-            } else {
-                $return[$menuName] = $callableMethod;
-            }
-        }
-
-        return $return;
     }
 }

@@ -11,6 +11,8 @@
 
 namespace Nadia\Bundle\NadiaMenuBundle;
 
+use Nadia\Bundle\NadiaMenuBundle\DependencyInjection\Compiler\MenuProviderPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -18,4 +20,10 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class NadiaMenuBundle extends Bundle
 {
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new MenuProviderPass());
+    }
 }
