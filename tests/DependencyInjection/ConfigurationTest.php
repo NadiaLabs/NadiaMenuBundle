@@ -11,7 +11,6 @@
 
 namespace Nadia\Bundle\NadiaMenuBundle\Tests\DependencyInjection;
 
-use Nadia\Bundle\NadiaMenuBundle\Builder\MenuBuilder;
 use Nadia\Bundle\NadiaMenuBundle\DependencyInjection\Configuration;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
@@ -101,7 +100,7 @@ class ConfigurationTest extends TestCase
             'menus' => [],
             'menu_providers' => [],
             'cache' => [
-                'adapter' => 'cache.adapter.array',
+                'adapter' => 'nadia.menu.default_cache_adapter',
                 'ttl' => 604800,
                 'group_key' => '_nadia_menu_cache_group',
                 'check_item_changes' => true,

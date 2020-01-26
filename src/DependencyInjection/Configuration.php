@@ -36,7 +36,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('cache')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('adapter')->defaultValue('cache.adapter.array')->end()
+                        ->scalarNode('adapter')->defaultValue('nadia.menu.default_cache_adapter')->end()
                         ->integerNode('ttl')->defaultValue(604800)->end()
                         ->scalarNode('group_key')->defaultValue('_nadia_menu_cache_group')->end()
                         // If enabled, will update cache automatically when menu items are changed.

@@ -2,11 +2,15 @@ parameters:
     nadia.menu.cache_tag_aware_adapter.known_tag_versions_ttl: 0.15
 
 services:
+    nadia.menu.default_cache_adapter:
+        class: Symfony\Component\Cache\Adapter\ArrayAdapter
+        decorates: cache.adapter.array
+
     nadia.menu.cache_tag_aware_adapter:
         class: Symfony\Component\Cache\Adapter\TagAwareAdapter
         arguments:
-            - '@cache.adapter.array'
-            - '@cache.adapter.array'
+            - '@nadia.menu.default_cache_adapter'
+            - '@nadia.menu.default_cache_adapter'
             - '%nadia.menu.cache_tag_aware_adapter.known_tag_versions_ttl%'
 
     Nadia\Bundle\NadiaMenuBundle\MenuProvider\MenuProvider:
@@ -15,7 +19,7 @@ services:
             # Parameter "nadia.menu.static_menu_cache_dir" is defined in NadiaMenuExtension
             - '%nadia.menu.static_menu_cache_dir%'
             - []
-            - []
+            - {}
 
     # MenuFactory for KnpMenu
     Nadia\Bundle\NadiaMenuBundle\MenuFactory\KnpMenuFactory:
@@ -25,3 +29,4 @@ services:
             - '@nadia.menu.cache_tag_aware_adapter'
             - '@security.token_storage'
             - '@security.authorization_checker'
+            - {}
