@@ -15,6 +15,7 @@ use Nadia\Bundle\NadiaMenuBundle\Config\Definition\Builder\MenuNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Class Configuration
@@ -27,9 +28,16 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $nodeBuilder = (new NodeBuilder())->setNodeClass('menu', MenuNodeDefinition::class);
-        $treeBuilder = new TreeBuilder('nadia_menu', 'array', $nodeBuilder);
 
-        $treeBuilder->getRootNode()
+        if (version_compare(Kernel::VERSION, '4.3', '<')) {
+            $treeBuilder = new TreeBuilder();
+            $rootNode = $treeBuilder->root('nadia_menu', 'array', $nodeBuilder);
+        } else {
+            $treeBuilder = new TreeBuilder('nadia_menu', 'array', $nodeBuilder);
+            $rootNode = $treeBuilder->getRootNode();
+        }
+
+        $rootNode
             ->fixXmlConfig('menu')
             ->fixXmlConfig('menu_provider')
             ->children()
