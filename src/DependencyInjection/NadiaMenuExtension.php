@@ -27,12 +27,10 @@ class NadiaMenuExtension extends Extension
 {
     /**
      * {@inheritdoc}
-     *
-     * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $locator = new FileLocator(__DIR__ . '/../../config/');
+        $locator = new FileLocator(__DIR__ . '/../Resources/config/');
         $loader  = new YamlFileLoader($container, $locator);
         $kernelCacheDir = $container->getParameter('kernel.cache_dir');
         $staticMenuCacheDir = $kernelCacheDir . '/knp_menu/menus';
