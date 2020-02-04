@@ -30,7 +30,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class KnpMenuFactoryTest extends TestCase
 {
-    public function testCreateWithoutCache()
+    public function testCreate()
     {
         $factory = $this->createKnpMenuFactory(
             ['ROLE_USER', 'ROLE_PAGE1', 'ROLE_PAGE2'],
@@ -81,7 +81,7 @@ class KnpMenuFactoryTest extends TestCase
         $this->assertInstanceOf(MenuItem::class, $menu2_1->getChild('menu #2-1-1'));
         $this->assertEquals('menu #2-1-1', $menu2_1->getChild('menu #2-1-1')->getName());
 
-        $this->assertNull($menu->getChild('menu #3'));
+        $this->assertNull($menu->getChild('menu #4'));
     }
 
     private function createKnpMenuFactory(
