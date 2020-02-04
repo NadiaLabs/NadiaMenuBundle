@@ -15,6 +15,7 @@ use Nadia\Bundle\NadiaMenuBundle\MenuFactory\KnpMenuFactory;
 use Nadia\Bundle\NadiaMenuBundle\MenuProvider\MenuProvider;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
@@ -64,6 +65,17 @@ class NadiaMenuExtension extends Extension
             'cache_group_key' => $config['cache']['group_key'],
             'check_item_changes' => $config['cache']['check_item_changes'],
         ]);
+
+        // Setup KnpMenu services
+        foreach ($config['knp_menus'] as $menuName) {
+            $menuDefinition = (new Definition('Knp\Menu\MenuItem'))
+                ->setFactory([new Reference(KnpMenuFactory::class), 'create'])
+                ->setArguments([$menuName])
+                ->addTag('knp_menu.menu', ['alias' => $menuName])
+            ;
+
+            $container->setDefinition('nadia.menu.knp_menu.' . $menuName, $menuDefinition);
+        }
     }
 
     /**
