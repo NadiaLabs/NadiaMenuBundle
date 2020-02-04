@@ -105,6 +105,7 @@ class ConfigurationTest extends TestCase
                 'group_key' => '_nadia_menu_cache_group',
                 'check_item_changes' => true,
             ],
+            'knp_menus' => [],
         ];
     }
 
@@ -171,6 +172,9 @@ class ConfigurationTest extends TestCase
                     'menu_provider3' =>
                         'Nadia\Bundle\NadiaMenuBundle\Tests\Fixtures\testMenuProvider',
                 ],
+            ]],
+            [[
+                'knp_menus' => ['test', 'test2'],
             ]]
         ];
     }

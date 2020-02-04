@@ -87,5 +87,8 @@
         <nadia_menu:menu_provider name="test2">
             Nadia\Bundle\NadiaMenuBundle\Tests\Fixtures\TestMenuProvider::provider2
         </nadia_menu:menu_provider>
+
+        <nadia_menu:knp_menu>test</nadia_menu:knp_menu>
+        <nadia_menu:knp_menu>test2</nadia_menu:knp_menu>
     </nadia_menu:config>
 </container>

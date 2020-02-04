@@ -41,6 +41,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->fixXmlConfig('menu')
             ->fixXmlConfig('menu_provider')
+            ->fixXmlConfig('knp_menu')
             ->children()
                 ->arrayNode('cache')
                     ->addDefaultsIfNotSet()
@@ -107,6 +108,9 @@ class Configuration implements ConfigurationInterface
                             ->thenInvalid('The provider %s is not callable! Valid format: "Foo\Bar\FooBar::foobar"')
                         ->end()
                     ->end()
+                ->end()
+                ->arrayNode('knp_menus')
+                    ->scalarPrototype()->end()
                 ->end()
             ->end()
         ;

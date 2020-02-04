@@ -63,3 +63,7 @@ nadia_menu:
         menu_provider4: test.menu.provider.service::provider3
         menu_provider5: Nadia\Bundle\NadiaMenuBundle\Tests\Fixtures\testMenuProvider
         test2: Nadia\Bundle\NadiaMenuBundle\Tests\Fixtures\TestMenuProvider::provider2
+
+    knp_menus:
+        - test
+        - test2
