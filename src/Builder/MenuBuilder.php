@@ -19,6 +19,7 @@ namespace Nadia\Bundle\NadiaMenuBundle\Builder;
  * $builder = new MenuBuilder();
  * $menu =
  *     $builder
+ *         ->setRoot('root', ['childrenAttributes' => ['class' => 'navbar-nav ml-auto']])
  *         ->addChild('Menu 1')
  *             ->addChild('Menu 1-1', ['route' => 'route-1-1'])->end()
  *             ->addChild('Menu 1-2', ['route' => 'route-1-2'])->end()
@@ -49,31 +50,36 @@ namespace Nadia\Bundle\NadiaMenuBundle\Builder;
 class MenuBuilder
 {
     /**
-     * @var array Format: <code><pre>
+     * @var object Format: <code><pre>
      * {
-     *   'data' => [],
-     *   'parent' => null,
-     *   'children' => [
+     *   "data" => {
+     *     "title" => "root",
+     *     "options" => {
+     *       "childrenAttributes" => {"class" => "navbar-nav ml-auto"},
+     *     },
+     *   },
+     *   "parent" => null,
+     *   "children" => [
      *     {
-     *       'data' => [
-     *         'title' => 'Menu title #1',
-     *         'options' => [
-     *           'route' => 'admin-dashboard',
-     *           'roles' => ['ROLE_XXX'],
-     *         ],
-     *       ],
-     *       'parent' => $this->menu,
-     *       'children' => [
+     *       "data" => {
+     *         "title" => "Menu title #1",
+     *         "options" => {
+     *           "route" => "admin-dashboard",
+     *           "roles" => ["ROLE_XXX"],
+     *         },
+     *       },
+     *       "parent" => $this->menu,
+     *       "children" => [
      *         {
-     *           'data' => [
-     *             'title' => 'Menu title #2',
-     *             'options' => [
-     *               'route' => 'admin-dashboard2',
-     *               'roles' => ['ROLE_YYY'],
-     *             ],
-     *           ],
-     *           'parent' => $this->menu->children[0],
-     *           'children' => [
+     *           "data" => {
+     *             "title" => "Menu title #2",
+     *             "options" => {
+     *               "route" => "admin-dashboard2",
+     *               "roles" => ["ROLE_YYY"],
+     *             },
+     *           },
+     *           "parent" => $this->menu->children[0],
+     *           "children" => [
      *             ...
      *           ]
      *         },
@@ -81,15 +87,15 @@ class MenuBuilder
      *       ]
      *     },
      *     {
-     *       'data' => [
-     *         'title' => 'Menu title #3',
-     *         'options' => [
-     *           'route' => 'admin-dashboard3',
-     *           'roles' => ['ROLE_ZZZ'],
-     *         ],
-     *       ],
-     *       'parent' => $this->menu,
-     *       'children' => [
+     *       "data" => {
+     *         "title" => "Menu title #3",
+     *         "options" => {
+     *           "route" => "admin-dashboard3",
+     *           "roles" => ["ROLE_ZZZ"],
+     *         },
+     *       },
+     *       "parent" => $this->menu,
+     *       "children" => [
      *         ...
      *       ]
      *     },
@@ -101,7 +107,7 @@ class MenuBuilder
     private $menu;
 
     /**
-     * @var array A node pointer that pointing to a menu node
+     * @var object A node pointer that pointing to a menu node
      */
     private $node;
 
@@ -110,8 +116,26 @@ class MenuBuilder
      */
     public function __construct()
     {
-        $this->menu = (object) ['data' => [], 'parent' => null, 'children' => []];
+        $this->menu = (object) ['data' => ['title' => 'root', 'options' => []], 'parent' => null, 'children' => []];
         $this->node = $this->menu;
+    }
+
+    /**
+     * Add child menu item to current node
+     *
+     * @param string $title   Menu title
+     * @param array  $options Menu options
+     *
+     * @return $this
+     */
+    public function setRoot($title, array $options = [])
+    {
+        $this->menu->data = [
+            'title' => $title,
+            'options' => $options,
+        ];
+
+        return $this;
     }
 
     /**
@@ -158,41 +182,51 @@ class MenuBuilder
      *
      * @return array Format: <code><pre>
      * [
-     *   [
-     *     'title' => 'Menu title #1',
-     *     'options' => [
-     *       'route' => 'admin-dashboard',
-     *       'roles' => ['ROLE_XXX'],
-     *     ],
-     *     'children' => [
-     *       [
-     *         'title' => 'Menu title #2',
-     *         'options' => [
-     *           'route' => 'admin-dashboard2',
-     *           'roles' => ['ROLE_YYY'],
-     *         ],
-     *         'children' => [],
-     *       ],
-     *       ...
-     *     ],
+     *   'root_title' => 'root',
+     *   'root_options' => [
+     *     'childrenAttributes' => ['class' => 'navbar-nav ml-auto'],
      *   ],
-     *   [
-     *     'title' => 'Menu title #3',
-     *     'options' => [
-     *       'route' => 'admin-dashboard3',
-     *       'roles' => ['ROLE_ZZZ'],
+     *   'children' => [
+     *     [
+     *       'title' => 'Menu title #1',
+     *       'options' => [
+     *         'route' => 'admin-dashboard',
+     *         'roles' => ['ROLE_XXX'],
+     *       ],
+     *       'children' => [
+     *         [
+     *           'title' => 'Menu title #2',
+     *           'options' => [
+     *             'route' => 'admin-dashboard2',
+     *             'roles' => ['ROLE_YYY'],
+     *           ],
+     *           'children' => [],
+     *         ],
+     *         ...
+     *       ],
      *     ],
-     *     'children' => [
-     *       ...
+     *     [
+     *       'title' => 'Menu title #3',
+     *       'options' => [
+     *         'route' => 'admin-dashboard3',
+     *         'roles' => ['ROLE_ZZZ'],
+     *       ],
+     *       'children' => [
+     *         ...
+     *       ],
      *     ],
-     *   ]
-     *   ...
+     *     ...
+     *   ],
      * ]
      * </pre></code>
      */
     public function getMenu()
     {
-        $menu = [];
+        $menu = [
+            'root_title' => $this->menu->data['title'],
+            'root_options' => $this->menu->data['options'],
+            'children' => [],
+        ];
 
         $toArray = function (&$menu, $node) use (&$toArray) {
             foreach ($node->children as $index => $child) {
@@ -207,7 +241,7 @@ class MenuBuilder
             }
         };
 
-        $toArray($menu, $this->menu);
+        $toArray($menu['children'], $this->menu);
 
         return $menu;
     }

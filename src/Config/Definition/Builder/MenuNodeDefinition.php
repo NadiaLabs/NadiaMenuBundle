@@ -60,7 +60,7 @@ class MenuNodeDefinition extends ArrayNodeDefinition
                                     return is_array($v) && !empty($v['type']);
                                 })
                                 ->then(function ($v) {
-                                    return $this->normalizeArrayValue($v);
+                                    return (new MenuOptionsNormalizer())->normalize($v);
                                 })
                             ->end()
                         ->end()
@@ -71,28 +71,5 @@ class MenuNodeDefinition extends ArrayNodeDefinition
                 ->end()
             ->end()
         ;
-    }
-
-    /**
-     * @param array $value
-     *
-     * @return array|mixed
-     */
-    private function normalizeArrayValue(array $value)
-    {
-        if (empty($value['target'])) {
-            return $value;
-        }
-        if (empty($value[$value['target']])) {
-            return [];
-        }
-
-        $type = empty($value['type']) ? '' : $value['type'];
-
-        if ('array' === $type) {
-            return (array) $value[$value['target']];
-        }
-
-        return $value[$value['target']];
     }
 }

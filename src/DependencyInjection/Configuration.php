@@ -11,6 +11,7 @@
 
 namespace Nadia\Bundle\NadiaMenuBundle\DependencyInjection;
 
+use Nadia\Bundle\NadiaMenuBundle\Config\Definition\Builder\MenuOptionsNormalizer;
 use Nadia\Bundle\NadiaMenuBundle\Config\Definition\Builder\MenuNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -62,7 +63,27 @@ class Configuration implements ConfigurationInterface
                             $this->throwInvalidMenuNameException($v);
                         })
                     ->end()
-                    ->prototype('menu')->addAttributes()->end()
+                    ->arrayPrototype()
+                        ->fixXmlConfig('child', 'children')
+                        ->fixXmlConfig('root_option')
+                        ->children()
+                            ->scalarNode('root_title')->defaultValue('root')->end()
+                            ->arrayNode('root_options')
+                                ->useAttributeAsKey('name')
+                                ->variablePrototype()
+                                    ->beforeNormalization()
+                                        ->ifTrue(function ($v) {
+                                            return is_array($v) && !empty($v['type']);
+                                        })
+                                        ->then(function ($v) {
+                                            return (new MenuOptionsNormalizer())->normalize($v);
+                                        })
+                                    ->end()
+                                ->end()
+                            ->end()
+                            ->node('children', 'menu')->addAttributes()->end()
+                        ->end()
+                    ->end()
                 ->end()
                 ->arrayNode('menu_providers')
                     ->useAttributeAsKey('name')

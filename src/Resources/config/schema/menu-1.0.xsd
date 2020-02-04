@@ -12,6 +12,7 @@
             <xsd:element name="cache" type="cache" minOccurs="0"/>
             <xsd:element name="menu" type="menu" minOccurs="0"/>
             <xsd:element name="menu_provider" type="menu_provider" minOccurs="0"/>
+            <xsd:element name="knp_menu" type="xsd:string" minOccurs="0" />
         </xsd:all>
     </xsd:complexType>
 
@@ -24,9 +25,11 @@
 
     <xsd:complexType name="menu">
         <xsd:all>
+            <xsd:element name="root_option" type="option" minOccurs="0" />
             <xsd:element name="child" type="child" minOccurs="0"/>
         </xsd:all>
         <xsd:attribute name="name" type="xsd:string" default=""/>
+        <xsd:attribute name="root_title" type="xsd:string" default=""/>
     </xsd:complexType>
 
     <xsd:complexType name="child">
@@ -39,6 +42,8 @@
 
     <xsd:complexType name="option">
         <xsd:attribute name="name" type="xsd:string" default=""/>
+        <xsd:attribute name="type" type="xsd:string" default=""/>
+        <xsd:attribute name="target" type="xsd:string" default=""/>
     </xsd:complexType>
 
     <xsd:complexType name="menu_provider">

@@ -59,6 +59,15 @@
                 </nadia_menu:child>
             </nadia_menu:child>
         </nadia_menu:menu>
+        <nadia_menu:menu name="test_root" root_title="Custom Root">
+            <nadia_menu:root_option name="foo">bar</nadia_menu:root_option>
+            <nadia_menu:root_option name="roles" type="array" target="role">
+                <nadia_menu:role>ROLE_TEST_ROOT</nadia_menu:role>
+            </nadia_menu:root_option>
+            <nadia_menu:child title="menu3 #1">
+                <nadia_menu:child title="menu3 #1-1" />
+            </nadia_menu:child>
+        </nadia_menu:menu>
 
         <nadia_menu:menu_provider name="menu_provider1">
             Nadia\Bundle\NadiaMenuBundle\Tests\Fixtures\TestMenuProvider::provider1

@@ -122,36 +122,40 @@ class ConfigurationTest extends TestCase
             [[
                 'menus' => [
                     'testMenu' => [
-                        [
-                            'title' => 'menu #1',
-                            'options' => [],
-                            'children' => [
-                                [
-                                    'title' => 'menu #1-1',
-                                    'options' => [],
-                                    'children' => [
-                                        [
-                                            'title' => 'menu #1-1-1',
-                                            'options' => [],
-                                            'children' => [],
+                        'root_title' => 'root',
+                        'root_options' => [],
+                        'children' => [
+                            [
+                                'title' => 'menu #1',
+                                'options' => [],
+                                'children' => [
+                                    [
+                                        'title' => 'menu #1-1',
+                                        'options' => [],
+                                        'children' => [
+                                            [
+                                                'title' => 'menu #1-1-1',
+                                                'options' => [],
+                                                'children' => [],
+                                            ],
                                         ],
                                     ],
-                                ],
-                                [
-                                    'title' => 'menu #1-2',
-                                    'options' => [],
-                                    'children' => [],
+                                    [
+                                        'title' => 'menu #1-2',
+                                        'options' => [],
+                                        'children' => [],
+                                    ],
                                 ],
                             ],
-                        ],
-                        [
-                            'title' => 'menu #2',
-                            'options' => [],
-                            'children' => [
-                                [
-                                    'title' => 'menu #2-1',
-                                    'options' => [],
-                                    'children' => [],
+                            [
+                                'title' => 'menu #2',
+                                'options' => [],
+                                'children' => [
+                                    [
+                                        'title' => 'menu #2-1',
+                                        'options' => [],
+                                        'children' => [],
+                                    ],
                                 ],
                             ],
                         ],

@@ -197,7 +197,7 @@ class KnpMenuFactory
      */
     private function buildMenuItems(array $menus)
     {
-        $rootMenu = $this->knpMenuFactory->createItem('root');
+        $rootMenu = $this->knpMenuFactory->createItem($menus['root_title'], $menus['root_options']);
 
         $build = function (array $menus, ItemInterface $rootMenu) use (&$build) {
             foreach ($menus as $menu) {
@@ -209,7 +209,7 @@ class KnpMenuFactory
             }
         };
 
-        $build($menus, $rootMenu);
+        $build($menus['children'], $rootMenu);
 
         return $rootMenu;
     }
