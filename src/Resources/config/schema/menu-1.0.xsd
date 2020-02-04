@@ -26,6 +26,7 @@
     <xsd:complexType name="menu">
         <xsd:all>
             <xsd:element name="root_option" type="option" minOccurs="0" />
+            <xsd:element name="item_option" type="option" minOccurs="0" />
             <xsd:element name="child" type="child" minOccurs="0"/>
         </xsd:all>
         <xsd:attribute name="name" type="xsd:string" default=""/>

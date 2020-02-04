@@ -100,9 +100,30 @@ class NadiaMenuExtension extends Extension
         }
 
         foreach ($menus as $name => $menu) {
+            if (!empty($menu['item_options'])) {
+                $this->mergeItemOptions($menu['children'], $menu['item_options']);
+            }
+
+            unset($menu['item_options']);
+
             $filename = $dir . '/' . $name . '.cache';
 
             $fs->dumpFile($filename, serialize($menu));
+        }
+    }
+
+    /**
+     * @param array $menuChildren
+     * @param array $itemOptions
+     */
+    private function mergeItemOptions(array &$menuChildren, array &$itemOptions)
+    {
+        foreach ($menuChildren as &$child) {
+            if (!empty($child['children'])) {
+                $this->mergeItemOptions($child['children'], $itemOptions);
+            }
+
+            $child['options'] = array_merge($itemOptions, $child['options']);
         }
     }
 }

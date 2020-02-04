@@ -125,6 +125,7 @@ class ConfigurationTest extends TestCase
                     'testMenu' => [
                         'root_title' => 'root',
                         'root_options' => [],
+                        'item_options' => [],
                         'children' => [
                             [
                                 'title' => 'menu #1',

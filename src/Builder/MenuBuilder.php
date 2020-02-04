@@ -116,23 +116,28 @@ class MenuBuilder
      */
     public function __construct()
     {
-        $this->menu = (object) ['data' => ['title' => 'root', 'options' => []], 'parent' => null, 'children' => []];
+        $this->menu = (object) ['data' => [], 'parent' => null, 'children' => []];
+
+        $this->setRoot('root');
+
         $this->node = $this->menu;
     }
 
     /**
      * Add child menu item to current node
      *
-     * @param string $title   Menu title
-     * @param array  $options Menu options
+     * @param string $title       Menu title
+     * @param array  $options     Menu options
+     * @param array  $itemOptions Common options for each menu items
      *
      * @return $this
      */
-    public function setRoot($title, array $options = [])
+    public function setRoot($title, array $options = [], array $itemOptions = [])
     {
         $this->menu->data = [
             'title' => $title,
             'options' => $options,
+            'item_options' => $itemOptions,
         ];
 
         return $this;
@@ -227,13 +232,15 @@ class MenuBuilder
             'root_options' => $this->menu->data['options'],
             'children' => [],
         ];
+        $itemOptions = $this->menu->data['item_options'];
 
-        $toArray = function (&$menu, $node) use (&$toArray) {
+        $toArray = function (&$menu, $node) use (&$toArray, $itemOptions) {
             foreach ($node->children as $index => $child) {
-                $data = $child->data;
-
-                $menu[$index] = $data;
-                $menu[$index]['children'] = [];
+                $menu[$index] = [
+                    'title' => $child->data['title'],
+                    'options' => array_merge($itemOptions, $child->data['options']),
+                    'children' => [],
+                ];
 
                 if (!empty($child->children)) {
                     $toArray($menu[$index]['children'], $child);

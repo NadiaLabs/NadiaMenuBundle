@@ -67,9 +67,23 @@ class Configuration implements ConfigurationInterface
                     ->arrayPrototype()
                         ->fixXmlConfig('child', 'children')
                         ->fixXmlConfig('root_option')
+                        ->fixXmlConfig('item_option')
                         ->children()
                             ->scalarNode('root_title')->defaultValue('root')->end()
                             ->arrayNode('root_options')
+                                ->useAttributeAsKey('name')
+                                ->variablePrototype()
+                                    ->beforeNormalization()
+                                        ->ifTrue(function ($v) {
+                                            return is_array($v) && !empty($v['type']);
+                                        })
+                                        ->then(function ($v) {
+                                            return (new MenuOptionsNormalizer())->normalize($v);
+                                        })
+                                    ->end()
+                                ->end()
+                            ->end()
+                            ->arrayNode('item_options')
                                 ->useAttributeAsKey('name')
                                 ->variablePrototype()
                                     ->beforeNormalization()
