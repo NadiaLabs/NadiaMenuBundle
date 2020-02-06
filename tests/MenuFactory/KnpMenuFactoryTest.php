@@ -17,11 +17,14 @@ use Knp\Menu\MenuItem;
 use Nadia\Bundle\NadiaMenuBundle\MenuFactory\KnpMenuFactory;
 use Nadia\Bundle\NadiaMenuBundle\MenuProvider\MenuProvider;
 use Nadia\Bundle\NadiaMenuBundle\Tests\Fixtures\TestAuthorizationChecker;
+use Nadia\Bundle\NadiaMenuBundle\Tests\Fixtures\TestUsernamePasswordToken;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -33,7 +36,7 @@ class KnpMenuFactoryTest extends TestCase
     public function testCreate()
     {
         $factory = $this->createKnpMenuFactory(
-            ['ROLE_USER', 'ROLE_PAGE1', 'ROLE_PAGE2'],
+            $this->mockUsernamePasswordToken(['ROLE_USER', 'ROLE_PAGE1', 'ROLE_PAGE2']),
             ['ROLE_PAGE1', 'ROLE_PAGE2'],
             ['ROLE_PAGE_3']
         );
@@ -47,7 +50,7 @@ class KnpMenuFactoryTest extends TestCase
         $this->doTestMenuAssertions($menu);
 
         $factory = $this->createKnpMenuFactory(
-            ['ROLE_USER', 'ROLE_PAGE1', 'ROLE_PAGE2'],
+            $this->mockUsernamePasswordToken(['ROLE_USER', 'ROLE_PAGE1', 'ROLE_PAGE2']),
             ['ROLE_PAGE1', 'ROLE_PAGE2'],
             ['ROLE_PAGE_3'],
             ['check_item_changes' => false]
@@ -57,6 +60,18 @@ class KnpMenuFactoryTest extends TestCase
         $menu = $factory->create('test');
 
         $this->doTestMenuAssertions($menu);
+
+        if (version_compare(Kernel::VERSION, '4.3', '<')) {
+            $factory = $this->createKnpMenuFactory(
+                $this->mockTestUsernamePasswordToken(['ROLE_USER', 'ROLE_PAGE1', 'ROLE_PAGE2']),
+                ['ROLE_PAGE1', 'ROLE_PAGE2'],
+                ['ROLE_PAGE_3']
+            );
+
+            $menu = $factory->create('test');
+
+            $this->doTestMenuAssertions($menu);
+        }
     }
 
     /**
@@ -85,7 +100,7 @@ class KnpMenuFactoryTest extends TestCase
     }
 
     private function createKnpMenuFactory(
-        array $tokenRoles,
+        TokenInterface $token,
         array $grantedRoles,
         array $notGrantedRoles,
         array $options = []
@@ -94,7 +109,7 @@ class KnpMenuFactoryTest extends TestCase
             $this->mockMenuProvider(),
             new MenuFactory(),
             new TagAwareAdapter(new ArrayAdapter(), new ArrayAdapter()),
-            $this->mockTokenStorage($tokenRoles),
+            $this->mockTokenStorage($token),
             $this->mockAuthorizationChecker($grantedRoles, $notGrantedRoles),
             $options
         );
@@ -122,17 +137,36 @@ class KnpMenuFactoryTest extends TestCase
     }
 
     /**
-     * @param array $roles
+     * @param TokenInterface $token
      *
      * @return TokenStorage
      */
-    private function mockTokenStorage(array $roles)
+    private function mockTokenStorage(TokenInterface $token)
     {
         $tokenStorage = new TokenStorage();
-        $token = new UsernamePasswordToken('testUser', 'secret', 'test', $roles);
 
         $tokenStorage->setToken($token);
 
         return $tokenStorage;
+    }
+
+    /**
+     * @param array $roles
+     *
+     * @return UsernamePasswordToken
+     */
+    private function mockUsernamePasswordToken(array $roles)
+    {
+        return new UsernamePasswordToken('testUser', 'secret', 'test', $roles);
+    }
+
+    /**
+     * @param array $roles
+     *
+     * @return TestUsernamePasswordToken
+     */
+    private function mockTestUsernamePasswordToken(array $roles)
+    {
+        return new TestUsernamePasswordToken('testUser', 'secret', 'test', $roles);
     }
 }
