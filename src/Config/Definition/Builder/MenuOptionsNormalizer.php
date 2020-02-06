@@ -26,13 +26,17 @@ class MenuOptionsNormalizer
         if (empty($value['target'])) {
             return $value;
         }
-        if (empty($value[$value['target']])) {
+        if (!array_key_exists($value['target'], $value)) {
             return [];
         }
 
         $type = empty($value['type']) ? '' : $value['type'];
 
         if ('array' === $type) {
+            if (empty($value[$value['target']])) {
+                return [];
+            }
+
             return (array) $value[$value['target']];
         }
 
