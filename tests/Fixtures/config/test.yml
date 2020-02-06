@@ -50,6 +50,9 @@ nadia_menu:
             root_options:
                 foo: bar
                 roles: [ROLE_TEST_ROOT]
+            item_options:
+                bar: foo
+                foobar: [foobar]
             children:
                 -   title: 'menu3 #1'
                     options: []

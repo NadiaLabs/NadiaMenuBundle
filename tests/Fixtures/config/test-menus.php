@@ -102,6 +102,7 @@ return [
     'test_root' => [
         'root_title' => 'Custom Root',
         'root_options' => ['foo' => 'bar', 'roles' => ['ROLE_TEST_ROOT']],
+        'item_options' => ['bar' => 'foo', 'foobar' => ['foobar']],
         'children' => [
             [
                 'title' => 'menu3 #1',

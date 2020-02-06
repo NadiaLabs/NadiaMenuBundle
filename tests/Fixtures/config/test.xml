@@ -64,6 +64,12 @@
             <nadia_menu:root_option name="roles" type="array" target="role">
                 <nadia_menu:role>ROLE_TEST_ROOT</nadia_menu:role>
             </nadia_menu:root_option>
+            <nadia_menu:item_option name="bar">
+                foo
+            </nadia_menu:item_option>
+            <nadia_menu:item_option name="foobar" type="array" target="foobar">
+                <nadia_menu:foobar>foobar</nadia_menu:foobar>
+            </nadia_menu:item_option>
             <nadia_menu:child title="menu3 #1">
                 <nadia_menu:child title="menu3 #1-1" />
             </nadia_menu:child>
