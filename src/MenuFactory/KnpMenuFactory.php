@@ -104,7 +104,7 @@ class KnpMenuFactory
         } else {
             $menus = $this->menuProvider->getMenu($menuName);
 
-            $this->filterGrantedMenus($menus);
+            $this->filterGrantedMenus($menus['children']);
 
             $item->set($menus);
             $item->tag([$this->getCacheGroupKey()]);
