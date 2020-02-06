@@ -39,14 +39,6 @@ class MenuNodeDefinition extends ArrayNodeDefinition
         }
 
         return $this
-            ->beforeNormalization()
-                ->ifTrue(function ($v) {
-                    return isset($v['child']);
-                })
-                ->then(function ($v) {
-                    return Processor::normalizeConfig($v, 'child', 'children');
-                })
-            ->end()
             ->arrayPrototype()
                 ->fixXmlConfig('option')
                 ->fixXmlConfig('child', 'children')
