@@ -28,9 +28,15 @@ class NadiaMenuBundleTest extends TestCase
 
         $bundle->build($container);
 
-        $this->assertContainsEquals(
-            new MenuProviderPass(),
-            $container->getCompiler()->getPassConfig()->getBeforeOptimizationPasses()
-        );
+        $count = 0;
+
+        foreach ($container->getCompiler()->getPassConfig()->getBeforeOptimizationPasses() as $pass) {
+            if ($pass instanceof MenuProviderPass) {
+                ++$count;
+            }
+        }
+
+
+        $this->assertEquals(1, $count);
     }
 }
