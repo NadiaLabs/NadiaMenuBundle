@@ -219,7 +219,7 @@ class KnpMenuFactory
      */
     private function getCacheExpirePeriod()
     {
-        return (int) $this->getOption('cache_ttl');
+        return (int) $this->options['cache_ttl'];
     }
 
     /**
@@ -227,7 +227,7 @@ class KnpMenuFactory
      */
     private function getCacheGroupKey()
     {
-        return $this->getOption('cache_group_key');
+        return (string) $this->options['cache_group_key'];
     }
 
     /**
@@ -235,21 +235,6 @@ class KnpMenuFactory
      */
     private function enableCheckItemChanges()
     {
-        return (bool) $this->getOption('check_item_changes');
-    }
-
-    /**
-     * @param string $name
-     * @param mixed  $default
-     *
-     * @return mixed
-     */
-    private function getOption($name, $default = null)
-    {
-        if (array_key_exists($name, $this->options)) {
-            return $this->options[$name];
-        }
-
-        return $default;
+        return (bool) $this->options['check_item_changes'];
     }
 }
