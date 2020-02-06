@@ -41,7 +41,7 @@ abstract class NadiaMenuExtensionTest extends TestCase
     {
         $container = $this->createContainerByConfigFile('test');
         $cacheDir = $container->getParameter('nadia.menu.static_menu_cache_dir');
-        $expectedMenus = require __DIR__ . '/../Fixtures/config/test-menus.php';
+        $expectedMenus = $this->getExpectedMenus();
 
         foreach ($expectedMenus as $name => $menu) {
             $actualMenu = unserialize(file_get_contents($cacheDir . '/' . $name . '.cache'));
@@ -56,7 +56,7 @@ abstract class NadiaMenuExtensionTest extends TestCase
     public function testMenuProviders()
     {
         $container = $this->createContainerByConfigFile('test');
-        $expectedMenus = require __DIR__ . '/../Fixtures/config/test-menus.php';
+        $expectedMenus = $this->getExpectedMenus();
 
         $menuProviderDefinition = $container->getDefinition(MenuProvider::class);
         $expectedMenuProviders = [
@@ -144,5 +144,26 @@ abstract class NadiaMenuExtensionTest extends TestCase
             'kernel.root_dir' => __DIR__,
             'kernel.container_class' => 'testContainer',
         ], $data)));
+    }
+
+    protected function getExpectedMenus()
+    {
+        $expectedMenus = require __DIR__ . '/../Fixtures/config/test-menus.php';
+
+        $mergeItemOptions = function (array &$menuChildren, array &$itemOptions) use (&$mergeItemOptions) {
+            foreach ($menuChildren as &$child) {
+                if (!empty($child['children'])) {
+                    $mergeItemOptions($child['children'], $itemOptions);
+                }
+
+                $child['options'] = array_merge($itemOptions, $child['options']);
+            }
+        };
+
+        $mergeItemOptions($expectedMenus['test_root']['children'], $expectedMenus['test_root']['item_options']);
+
+        unset($expectedMenus['test_root']['item_options']);
+
+        return $expectedMenus;
     }
 }
