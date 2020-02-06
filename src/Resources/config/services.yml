@@ -4,7 +4,7 @@ parameters:
 services:
     nadia.menu.default_cache_adapter:
         class: Symfony\Component\Cache\Adapter\ArrayAdapter
-        decorates: cache.adapter.array
+        decorates: cache.app
 
     nadia.menu.cache_tag_aware_adapter:
         class: Symfony\Component\Cache\Adapter\TagAwareAdapter
