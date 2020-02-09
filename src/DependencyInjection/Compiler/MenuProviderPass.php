@@ -15,6 +15,7 @@ use Nadia\Bundle\NadiaMenuBundle\MenuProvider\MenuProvider;
 use ReflectionException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -55,12 +56,12 @@ class MenuProviderPass implements CompilerPassInterface
 
                     if ($ref->isStatic()) {
                         $return[$menuName] = $callableMethod;
-                    } elseif ($container->has($className)) {
-                        $return[$menuName] = [new Reference($className), $methodName];
-                    } else {
-                        $return[$menuName] = [new $className(), $methodName];
+                    } elseif (!$container->has($className)) {
+                        $container->setDefinition($className, new Definition($className));
                     }
-                } else {
+                }
+
+                if (empty($return[$menuName])) {
                     $return[$menuName] = [new Reference($className), $methodName];
                 }
             } else {

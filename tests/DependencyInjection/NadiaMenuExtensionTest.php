@@ -62,7 +62,7 @@ abstract class NadiaMenuExtensionTest extends TestCase
         $expectedMenuProviders = [
             'menu_provider1' => 'Nadia\Bundle\NadiaMenuBundle\Tests\Fixtures\TestMenuProvider::provider1',
             'menu_provider2' => 'Nadia\Bundle\NadiaMenuBundle\Tests\Fixtures\TestMenuProvider::provider2',
-            'menu_provider3' => [new TestMenuProvider(), 'provider3'],
+            'menu_provider3' => [new Reference(TestMenuProvider::class), 'provider3'],
             'menu_provider4' => [new Reference('test.menu.provider.service'), 'provider3'],
             'menu_provider5' => 'Nadia\Bundle\NadiaMenuBundle\Tests\Fixtures\testMenuProvider',
         ];
