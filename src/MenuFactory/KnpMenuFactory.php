@@ -180,7 +180,15 @@ class KnpMenuFactory
                 continue;
             }
 
-            if (!$this->authorizationChecker->isGranted($menu['options']['roles'])) {
+            $isGranted = false;
+
+            foreach ($menu['options']['roles'] as $role) {
+                if ($isGranted = $this->authorizationChecker->isGranted($role)) {
+                    break;
+                }
+            }
+
+            if (!$isGranted) {
                 unset($menus[$index]);
             } elseif (!empty($menu['children'])) {
                 $this->filterGrantedMenus($menu['children']);
