@@ -1,0 +1,7 @@
+parameters:
+
+services:
+    Nadia\Bundle\NadiaMenuBundle\Menu\KnpMenuFactory:
+        arguments:
+            - '@knp_menu.factory'
+            - '@security.authorization_checker'
